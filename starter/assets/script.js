@@ -37,15 +37,18 @@ planWorkday.forEach(function (timeBlock, index) {
 
 function colorRow(time) {
     var planNow = dayjs();
-    var planEntry = dayjs(time, "h A");
-    if (planNow.isBefore(planEntry)) {
+    var startTime = dayjs(time, "h A");
+    var endTime = dayjs(time, "h A").add(1, 'hour');
+
+    if (planNow.isBefore(startTime)) {
         return "future";
-    } else if (planNow.isAfter(planEntry)) {
+    } else if (planNow.isAfter(endTime)) {
         return "past";
     } else {
         return "present";
     }
 }
+
 
 $(".container").on("click", ".saveBtn", function () {
     var blockID = parseInt(
@@ -56,6 +59,6 @@ $(".container").on("click", ".saveBtn", function () {
     );
     planWorkday[blockID].event = userEntry;
 
-    // Update local storage
+
     localStorage.setItem("workDay", JSON.stringify(planWorkday));
 });
