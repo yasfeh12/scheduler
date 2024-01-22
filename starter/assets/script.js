@@ -21,3 +21,33 @@ var planWorkday = [
 
 var today = dayjs().format("dddd, MMMM, D, YYYY ");
 $("#currentDay").text(today);
+
+planWorkday.forEach(function(timeBlock, index) {
+    var timeLabel = timeBlock.time;
+    var blockColor = colorRow(timeLabel);
+    var row =
+        '<div class="time-block" id="' +
+        index +
+        '"><div class="row no-gutters input-group"><div class="col-sm col-lg-1 input-group-prepend hour justify-content-sm-end pr-3 pt-3">' +
+        timeLabel +
+        '</div><textarea class="form-control ' +
+        blockColor +
+        '">' +
+        timeBlock.event +
+        '</textarea><div class="col-sm col-lg-1 input-group-append"><button class="saveBtn btn-block" type="submit"><i class="fas fa-save"></i></button></div></div></div>';
+
+    
+    $(".container").append(row);
+});
+
+function colorRow(time) {
+    var planNow = dayjs();
+    var planEntry = dayjs(time, "h A"); 
+    if (planNow.isBefore(planEntry)) {
+      return "future";
+    } else if (planNow.isAfter(planEntry)) {
+      return "past";
+    } else {
+      return "present";
+    }
+}
